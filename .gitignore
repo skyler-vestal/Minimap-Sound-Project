@@ -1,47 +1,27 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
 
-# Folder config file
-Desktop.ini
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+# Visual Studio 2015 cache/options directory
+.vs/
 
-# Windows shortcuts
-*.lnk
-
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
