@@ -64,7 +64,7 @@
             this.mapImage.Cursor = System.Windows.Forms.Cursors.Cross;
             this.mapImage.Location = new System.Drawing.Point(0, 0);
             this.mapImage.Name = "mapImage";
-            this.mapImage.Size = new System.Drawing.Size(10, 10);
+            this.mapImage.Size = new System.Drawing.Size(0, 0);
             this.mapImage.TabIndex = 0;
             this.mapImage.TabStop = false;
             this.mapImage.Paint += new System.Windows.Forms.PaintEventHandler(this.mapImage_Paint);
