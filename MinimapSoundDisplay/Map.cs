@@ -11,7 +11,6 @@
             this.Image = Image;
         }
 
-        
         public override string ToString()
         {
             return this.Name;

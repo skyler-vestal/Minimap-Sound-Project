@@ -1,68 +1,34 @@
 ﻿using System;
-using System.IO;
-using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Drawing;
-using System.Drawing.Imaging;
+using System.IO;
+using System.Windows.Forms;
 using KUtility;
 
 namespace MinimapSoundDisplay
 {
-    public partial class frmMap : Form
+    public partial class MainForm : Form
     {
-        // Path to the CS:GO directory - the @ is to suppress errors because of backslashes
-        private string csDir = "";
-
         // Get the startup path
         private string startupPath = AppDomain.CurrentDomain.BaseDirectory;
 
-        public frmMap()
+        public MainForm()
         {
             InitializeComponent();
-        }
 
-
-        private void frmMap_Load(object sender, EventArgs e)
-        {
-            csDir = Properties.Settings.Default.csgoPath;
-
-            if (csDir == "")
+            if (Properties.Settings.Default.csgoPath == "")
             {
                 changeCsgoDir();
             }
 
-            MapList();
-
-            // Loads Form2 when launching this form
-            // The (this) makes form2 launch and stay on top of form1
-            frmSoundRadius form2 = new frmSoundRadius();
-            form2.Show(this);
+            loadMaps();
         }
 
-        private void changeCsgoDir()
-        {
-            FolderBrowserDialog csbrowser = new FolderBrowserDialog() {
-                Description = "Select your CS:GO installation directory"
-            };
-
-            DialogResult result = csbrowser.ShowDialog();
-
-            if (csbrowser.SelectedPath != "" && result != DialogResult.Abort && result != DialogResult.Cancel)
-            {
-                csDir = csbrowser.SelectedPath;
-
-                // Update the path
-                Properties.Settings.Default.csgoPath = csbrowser.SelectedPath;
-                Properties.Settings.Default.Save();
-            }
-        }
-
-        public void MapList()
+        public void loadMaps()
         {
             cBox.Items.Clear();
 
             // Path to the folder the radar files are stored in
-            string radarDir = csDir + @"\csgo\resource\overviews";
+            string radarDir = Properties.Settings.Default.csgoPath + @"\csgo\resource\overviews";
 
             DirectoryInfo radarDirInfo = new DirectoryInfo(radarDir);
 
@@ -110,31 +76,21 @@ namespace MinimapSoundDisplay
             }
         }
 
-
-        private void cBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void changeCsgoDir()
         {
-            if (cBox.SelectedIndex > -1)
+            FolderBrowserDialog csbrowser = new FolderBrowserDialog()
             {
-                // When the combobox changes, this will change the bitmap to the select map on the list
-                // I don't believe the = null does anything, if someone can fix this to fix horrible memory
-                // stacking that would be rad :) thanks
+                Description = "Select your CS:GO installation directory"
+            };
 
-                // TODO: Dispose the image properly
-                // EDIT: The method below works, but makes the disposed image unusable
-                /*if (pictureBox.Image != null)
-                {
-                    pictureBox.Image.Dispose();
-                }*/
+            DialogResult result = csbrowser.ShowDialog();
 
-                pictureBox.BackgroundImage = null;
-                var imageName = (Map)cBox.SelectedItem;
-                pictureBox.BackgroundImage = imageName.Image;
+            if (csbrowser.SelectedPath != "" && result != DialogResult.Abort && result != DialogResult.Cancel)
+            {
+                // Update the path
+                Properties.Settings.Default.csgoPath = csbrowser.SelectedPath;
+                Properties.Settings.Default.Save();
             }
-        }
-
-        private void btnChangeCsgoDir_Click(object sender, EventArgs e)
-        {
-            changeCsgoDir();
         }
 
         private void btnClearCache_Click(object sender, EventArgs e)
@@ -151,8 +107,60 @@ namespace MinimapSoundDisplay
             }
 
             this.Enabled = false;
-            MapList();
+            loadMaps();
             this.Enabled = true;
+        }
+
+        #region Map Combobox
+        private void cBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Map map = (Map)cBox.SelectedItem;
+            mapPictureBox.Image = map.Image;
+        }
+        #endregion
+        #region Map Handling
+        internal bool isMapPanning = false;
+        internal Point panStartPoint = Point.Empty;
+        internal Point cursorPoint = Point.Empty;
+
+        private void mapPictureBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right)
+            {
+                panStartPoint = new Point(e.X, e.Y);
+                isMapPanning = true;
+            }
+        }
+
+        private void mapPictureBox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button != MouseButtons.Right && isMapPanning)
+            {
+                int newX = (panStartPoint.X - e.X) - mapPanDummy.AutoScrollPosition.X;
+                int newY = (panStartPoint.Y - e.Y) - mapPanDummy.AutoScrollPosition.Y;
+
+                mapPanDummy.AutoScrollPosition = new Point(newX, newY);
+            }
+            else
+            {
+                cursorPoint = new Point(e.X, e.Y);
+                mapPictureBox.Invalidate();
+            }
+        }
+        private void mapPictureBox_MouseUp(object sender, MouseEventArgs e)
+        {
+            isMapPanning = false;
+        }
+
+        private void mapPictureBox_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.FillEllipse(new SolidBrush(Color.FromArgb(110, Color.White)), cursorPoint.X - 180, cursorPoint.Y - 180, 360, 360);
+        }
+        #endregion
+
+        private void btnChangeCsgoDir_Click(object sender, EventArgs e)
+        {
+            changeCsgoDir();
         }
     }
 }
