@@ -9,10 +9,11 @@ time trying to edit this I'm guessing. I'm be paying special attention to commen
 on this video, so if you have a question on where something is stored just ask there.
 
 Sorry for the messy stuff :P I don't clean up well (it's why I don't show my face ;P)
-
-aequabit: I did :P
-
 Dinoswarleafs
+
+aequabit: I did clean up a bit :P
+
+App is located in "MinimapSoundDisplay/bin/Debug"
 
 Credits:
   DDSImage 0.3 by kprojects (https://code.google.com/archive/p/kprojects/)
