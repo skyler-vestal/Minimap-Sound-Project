@@ -14,6 +14,6 @@ Dinoswarleafs
 The app itself is located in "MinimapSoundDisplay/bin/Release"
 
 Credits:
-  aequabit: Made the app read .dds images directly from the CS:GO directory and cache them as .png files
-  berkay2578: Recreated the whole UI and improved the sound radius display
-  kprojects: DDSImage 0.3 (https://code.google.com/archive/p/kprojects/)
+  aequabit: Made the app read .dds images directly from the CS:GO directory and cache them as .png files  
+  berkay2578: Recreated the whole UI and improved the sound radius display  
+  kprojects: DDSImage 0.3 (https://code.google.com/archive/p/kprojects/)  
